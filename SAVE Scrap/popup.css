@@ -1,0 +1,15 @@
+.saveButton {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 20px;
+  color: #67c5ff;
+  border: solid 2px #67c5ff;
+  border-radius: 3px;
+  width:150px;
+  height:40px;
+}
+
+.saveButton:hover {
+  background: #67c5ff;
+  color: white;
+}
