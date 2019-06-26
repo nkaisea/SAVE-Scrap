@@ -5,6 +5,7 @@ var hour;
 var min;
 var sec;
 var dispName;
+var saveMode;
 
 window.onload = function(){
   hour = localStorage.getItem("hour");
@@ -14,13 +15,34 @@ window.onload = function(){
   if (hour != undefined) document.getElementById('last').innerHTML = hour + " : " + min + " : " + sec + '<br>' + dispName;
 }
 
+/*
+//menu
+document.addEventListener('DOMContentLoaded', function() {
+    var menuOpen = document.getElementById('menuOpen');
+    menuOpen.addEventListener('click', function() {
+        obj=document.getElementById('open').style;
+        obj.display=(obj.display=='none')?'block':'none';
+    });
+});
+*/
+
+//SAVE
 document.getElementById("save").addEventListener("click",getUrl);
 
 function getUrl(){
+  //var saveMode = document.getElementsByName('saveMode');
+  var saveMode = "default";
   chrome.tabs.getSelected(null, function(tab){
         url = tab.url;
   });
-  setTimeout(SaveScrap,100);
+  switch (saveMode) {
+    case 'default':
+      setTimeout(SaveScrap,100);
+      break;
+    case 'gyazo':
+      setTimeout(SaveGyazo,100);
+      break;
+  }
 }
 
 function SaveScrap(){
@@ -44,12 +66,13 @@ function SaveScrap(){
         text = new Blob([xhr.responseText], {type: 'text/plain'});
         var a = document.createElement('a');
           a.href = window.URL.createObjectURL(text);
-          a.download = decodeURI(pageName) + time + '.txt';
+          a.download = decodeURIComponent(pageName) + "_" + hour + min + sec + '.txt';
           a.click();
       });
       xhr.send();
 
-      dispName = pageName.slice(pageName.lastIndexOf('/')+1);
+      dispName = decodeURIComponent(pageName);
+      //dispName = decodeURIComponent(pageName.slice(pageName.lastIndexOf('/')+1));
       document.getElementById('last').innerHTML = hour + " : " + min + " : " + sec + '<br>' + dispName;
       localStorage.setItem("hour", hour);
       localStorage.setItem("min", min);
