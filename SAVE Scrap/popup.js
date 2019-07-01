@@ -66,7 +66,7 @@ function SaveScrap(){
         text = new Blob([xhr.responseText], {type: 'text/plain'});
         var a = document.createElement('a');
           a.href = window.URL.createObjectURL(text);
-          a.download = decodeURIComponent(pageName) + "_" + hour + min + sec + '.txt';
+          a.download = decodeURIComponent(pageName.slice(1)) + "_" + hour + "-" + min + "-" + sec + '.txt';
           a.click();
       });
       xhr.send();
